@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent_with_eval": "src.agent_with_eval:graph",
+    "simple_agent": "src.agent:graph"
+  },
+  "env": ".env"
+}

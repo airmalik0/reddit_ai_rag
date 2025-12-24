@@ -1,0 +1,24 @@
+# Environment
+.env
+.venv/
+venv/
+
+# Data directories
+qdrant_data/
+postgres_data/
+
+# LangGraph
+.langgraph_api/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
