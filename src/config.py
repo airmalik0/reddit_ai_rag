@@ -17,7 +17,7 @@ SPARSE_EMBEDDING_MODEL = "Qdrant/bm25"
 QDRANT_HOST = os.environ.get("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.environ.get("QDRANT_PORT", 6333))
 QDRANT_GRPC_PORT = int(os.environ.get("QDRANT_GRPC_PORT", 6334))
-COLLECTION_NAME = "learnprogramming"
+COLLECTION_NAME = "reddit_posts"
 
 # Vector store settings
 CHUNK_SIZE = 1000

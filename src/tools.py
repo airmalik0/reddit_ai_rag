@@ -13,9 +13,9 @@ from .db import get_posts_by_ids
 # ---------------------------------------------------------------------------
 
 class SearchPostsInput(BaseModel):
-    """Input schema for searching programming posts."""
+    """Input schema for searching Reddit posts."""
     query: str = Field(
-        description="Search query to find relevant programming posts (e.g., 'how to learn Python', 'career advice for junior developers')"
+        description="Search query to find relevant Reddit posts (e.g., 'how to learn Python', 'best coffee grinder', 'explain quantum physics')"
     )
     num_results: int = Field(
         default=DEFAULT_NUM_RESULTS,
@@ -38,10 +38,10 @@ def create_search_tool():
 
     @tool(args_schema=SearchPostsInput)
     def search_posts(query: str, num_results: int = DEFAULT_NUM_RESULTS) -> str:
-        """Search through programming-related Reddit posts.
+        """Search through Reddit posts from multiple communities.
 
-        Use this tool to find information about programming questions,
-        learning experiences, career advice, and technical discussions.
+        Available subreddits: r/learnprogramming, r/Coffee, r/explainlikeimfive.
+        Use this tool to find real experiences, opinions, and discussions.
 
         Args:
             query: Search query to find relevant posts
