@@ -8,6 +8,7 @@ Usage:
 
 import argparse
 import sys
+import time
 from pathlib import Path
 from uuid import uuid4
 
@@ -113,15 +114,29 @@ def index_to_qdrant(chunks, dense_embeddings, sparse_embeddings, client, collect
     documents = [chunk[3] for chunk in chunks]
     contents = [doc.page_content for doc in documents]
 
-    # Generate embeddings in batches
-    batch_size = 100
+    # Generate embeddings in batches with retry
+    batch_size = 50  # Smaller batches for stability
     dense_vectors = []
     sparse_vectors = []
+    max_retries = 5
 
     for i in range(0, len(contents), batch_size):
         batch = contents[i:i + batch_size]
-        dense_vectors.extend(dense_embeddings.embed_documents(batch))
-        sparse_vectors.extend(list(sparse_embeddings.embed_documents(batch)))
+
+        # Retry loop for network errors
+        for attempt in range(max_retries):
+            try:
+                dense_vectors.extend(dense_embeddings.embed_documents(batch))
+                sparse_vectors.extend(list(sparse_embeddings.embed_documents(batch)))
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    wait = 2 ** attempt  # Exponential backoff
+                    print(f"    ⚠️  Error: {e}. Retrying in {wait}s...")
+                    time.sleep(wait)
+                else:
+                    raise
+
         print(f"    Embedded {min(i + batch_size, len(contents))}/{len(contents)}")
 
     # Create points
